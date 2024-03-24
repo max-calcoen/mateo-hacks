@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <title>The Shelf - Checkout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: var(--bg-light-grey);
+        color: var(--font-black);
+        padding-top: 12vh; /* Add padding to avoid overlap with the fixed navbar */
+        margin: 0;
+      }
+
+      form {
+        background-color: var(--bg-white);
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        margin: auto; /* Center the form in the available vertical space */
+      }
+
+      form * {
+        font-size: var(--font-size-4);
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid var(--bg-dark-grey);
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: --font-size-3;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+      }
+
+      input[type="radio"] {
+        display: none;
+      }
+
+      label {
+        margin-left: 8px;
+        margin: 10px;
+      }
+
+      #atype-label-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+      }
+
+      .orange-buttons {
+        background-color: var(--dark-orange);
+        color: var(--font-white);
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .orange-buttons[type="submit"]:hover,
+      .label-selected {
+        background-color: var(--darker-orange);
+      }
+
+      .flashes {
+        list-style-type: none;
+        padding: 0;
+      }
+
+      .flashes li {
+        color: var(--light-orange);
+        padding: 5px;
+      }
+
+      nav {
+        position: fixed; /* Ensure the navbar is fixed to the top */
+        z-index: 1000; /* Higher z-index to keep it above other content */
+      }
+
+      .inline {
+        display: inline;
+        width: fit-content;
+      }
+    </style>
+  </head>
+  <body>
+    {{header | safe}}
+    <div>
+      <form method="post" action="/checkout/{{request_id}}">
+        <h2>Donation to Request {{request_id}}</h2>
+        <input
+          type="text"
+          placeholder="Credit Card Number"
+          name="ccn"
+          maxlength="16"
+          required
+        />
+        <input
+          type="text"
+          placeholder="Cardholder's Name"
+          name="cc_name"
+          required
+        />
+        <input
+          class="inline"
+          type="text"
+          placeholder="MM"
+          name="exp_month"
+          maxlength="2"
+          required
+        />
+        <input
+          class="inline"
+          type="text"
+          placeholder="YY"
+          name="exp_year"
+          maxlength="2"
+          required
+        />
+        <input
+          class="inline"
+          type="text"
+          placeholder="CVV"
+          name="cvv"
+          maxlength="3"
+          required
+        />
+        <input type="text" placeholder="Street Address" name="addr" required />
+        <input
+          type="text"
+          placeholder="State"
+          class="inline"
+          name="state"
+          required
+        />
+        <input
+          class="inline"
+          type="text"
+          placeholder="Zip Code"
+          name="zip_code"
+          maxlength="5"
+          required
+        />
+        <input
+          type="submit"
+          value="Donate"
+          name="action"
+          class="orange-buttons"
+        />
+      </form>
+    </div>
+  </body>
+</html>

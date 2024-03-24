@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="../static/styles/style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The Shelf - Home</title>
+    <style>
+      :root {
+        --font-size-1: 72px;
+        --font-size-2: 54px;
+        --font-size-3: 42px;
+        --font-size-4: 24px;
+        --font-size-5: 18px;
+
+        --bg-dark-grey: #838387;
+        --bg-light-grey: #d2d2d9;
+        --bg-white: rgb(250, 250, 255);
+        --bg-purewhite: #fefeff;
+
+        --light-orange: #e3a246;
+        --dark-orange: rgb(227, 136, 9);
+        --darker-orange: rgb(200, 116, 0);
+
+        --font-black: #2f2f30;
+        --font-light-grey: #a6a6ab;
+        --font-white: #fafafd;
+      }
+
+      #about {
+        text-align: center;
+        padding: 20px;
+        margin: 20px auto;
+        max-width: 800px;
+      }
+
+      #about h1 {
+        color: var(--dark-orange);
+        font-size: var(--font-size-2);
+      }
+
+      #about p {
+        color: var(--font-light-grey);
+        font-size: var(--font-size-5);
+        line-height: 1.6;
+      }
+
+      .interactive-stats {
+        background-color: var(--bg-light-grey);
+        padding: 80px 20px; /* Adjust the padding to accommodate the header and content */
+        text-align: center;
+        min-height: 270px;
+        position: relative; /* This will be the positioning context for the absolute children */
+      }
+
+      .interactive-stats h2 {
+        color: var(--dark-orange);
+        font-size: var(--font-size-3);
+        margin: 0 auto 30px; /* Auto margins for horizontal centering */
+        display: block;
+      }
+
+      .stats-page {
+        position: absolute;
+        top: 160px; /* Position below the header; adjust as needed */
+        left: 0;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        animation: cycle 30s infinite;
+      }
+
+      .stats-page img {
+        width: 50%; /* Adjust width as needed */
+        height: auto;
+      }
+
+      .stats-page-text {
+        width: 50%; /* Adjust width as needed */
+        padding: 20px;
+        text-align: left;
+        color: var(--font-black);
+      }
+
+      @keyframes cycle {
+        0%,
+        100% {
+          opacity: 0;
+        }
+        /* Each stats page will become visible at these intervals */
+        0.5%,
+        33% {
+          opacity: 1;
+        }
+        /* Fade out more slowly */
+        33.1%,
+        33.333% {
+          opacity: 0;
+        }
+      }
+
+      /* Set animation delays based on the 30s total duration */
+      .stats-page:nth-child(1) {
+        animation-delay: -30s;
+      }
+      .stats-page:nth-child(2) {
+        animation-delay: -20s;
+      }
+      .stats-page:nth-child(3) {
+        animation-delay: -10s;
+      }
+    </style>
+  </head>
+  <body>
+    {{header | safe}}
+    <section id="about">
+      <h1>Our Mission</h1>
+      <p>
+        The Shelf challenges the notion that people serving life sentences
+        deserve a second chance to reform. To prove their readiness to rejoin
+        society on parole, these prisoners often read books and educate
+        themselves. However, their attorneys struggle to provide these resources
+        for them, giving them the chance for redemption. Breaking societal
+        barriers, The Shelf strives to connect these attorneys with donors and
+        patrons who share their vision, showing the world that the incarcerated
+        are still human beings.
+      </p>
+    </section>
+    <section class="interactive-stats">
+      <h2>Impact</h2>
+      <div class="stats-page">
+        <img src="{{ url_for('static', filename='res/img1.png') }}" />
+        <div class="stats-page-text">
+          <p>
+            By 2030, the aging prison population is projected to reach a
+            significant milestone, with one out of every three incarcerated
+            individuals being 55 years old or older. This demographic shift
+            underscores the increasing challenges of managing elderly inmates,
+            including the need for specialized healthcare services. The trend
+            also highlights the long-term consequences of sentences, suggesting
+            a reconsideration of sentencing policies and prison reform to
+            address aging populations.
+          </p>
+        </div>
+      </div>
+      <div class="stats-page">
+        <img src="{{ url_for('static', filename='res/img2.png') }}" />
+        <div class="stats-page-text">
+          <p>
+            In the United States, a staggering 200,000 individuals are serving
+            life sentences, reflecting the country's tough stance on crime and
+            punishment. This number represents a significant portion of the
+            prison population and raises questions about the effectiveness and
+            moral implications of life imprisonment. It underscores the urgent
+            need for a dialogue on criminal justice reform, particularly
+            concerning rehabilitation and the potential for second chances.
+          </p>
+        </div>
+      </div>
+      <div class="stats-page">
+        <img src="{{ url_for('static', filename='res/img3.png') }}" />
+        <div class="stats-page-text">
+          <p>
+            Nearly half of those serving life sentences in the United States
+            were incarcerated before reaching the age of 25, highlighting a
+            critical issue in the justice system's approach to young offenders.
+            This statistic points to the profound impact of early-life decisions
+            on individuals' futures and emphasizes the importance of
+            intervention and support for at-risk youth. It also calls into
+            question the fairness and potential for reform within sentencing
+            practices, particularly for crimes committed at a young age.
+          </p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

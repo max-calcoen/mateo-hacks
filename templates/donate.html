@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>The Shelf - Donate Books</title>
+    <style>
+      table {
+        border-spacing: 0px;
+        width: 100%;
+      }
+
+      th {
+        height: 25px;
+      }
+
+      td {
+        height: 60px;
+        padding-left: 5px;
+      }
+
+      table tr:nth-child(odd) {
+        background-color: var(--bg-white);
+      }
+
+      table tr:nth-child(even),
+      th {
+        background-color: var(--bg-light-grey);
+      }
+
+      .orange-buttons {
+        background-color: var(--dark-orange);
+        color: var(--font-white);
+        padding: 12px 20px;
+        border: none;
+        border-radius: 40px;
+        cursor: pointer;
+        margin: 2%;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    {{header | safe}}
+    <h1>Book Donation Requests</h1>
+    {% if book_requests %}
+    <table>
+      <thead>
+        <tr>
+          <th>Request ID</th>
+          <th>Attorney ID</th>
+          <th>ISBN</th>
+          <th>Prison Title</th>
+          <th>Timestamp</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for request in book_requests %}
+        <tr>
+          <td>{{ request.id }}</td>
+          <td>{{ request.attorney_id }}</td>
+          <td>{{ request.isbn }}</td>
+          <td>{{ request.prison_title }}</td>
+          <td>{{ request.timestamp }}</td>
+          <td>
+            <form action="/donate" method="POST">
+            <input
+              type="submit"
+              class="hidden"
+              name="request_id"
+              id="{{request.id}}"
+              value="{{request.id}}"
+            \>
+            <label for="{{request.id}}" class="orange-buttons">Donate</label>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p>No book requests at the moment.</p>
+    {% endif %}
+  </body>
+</html>

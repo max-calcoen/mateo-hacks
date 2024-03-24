@@ -1,0 +1,18 @@
+DROP TABLE IF EXISTS accounts;
+DROP TABLE IF EXISTS requests;
+CREATE TABLE accounts (
+    rowid INTEGER PRIMARY KEY AUTOINCREMENT,
+    fname TEXT NOT NULL,
+    lname TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    pw TEXT NOT NULL,
+    type TEXT NOT NULL
+);
+CREATE TABLE requests (
+    rowid INTEGER PRIMARY KEY AUTOINCREMENT,
+    attorney_id INTEGER,
+    ISBN TEXT NOT NULL,
+    prison_title TEXT NOT NULL,
+    timestamp TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (attorney_id) REFERENCES accounts (id)
+);

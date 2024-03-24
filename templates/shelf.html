@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>The Shelf - Request Books</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .grid-container {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        gap: 20px;
+        padding: 10px;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+
+      table,
+      td,
+      th {
+        border: 1px solid black;
+      }
+
+      table tr:first-child th {
+        border-top: 0;
+      }
+
+      table tr:last-child td {
+        border-bottom: 0;
+      }
+
+      table tr td:first-child,
+      table tr th:first-child {
+        border-left: 0;
+      }
+
+      table tr td:last-child,
+      table tr th:last-child {
+        border-right: 0;
+      }
+      td {
+        padding: 8px;
+      }
+    </style>
+    <script>
+      function previewISBN(isbn) {
+        const apiUrl = `https://openlibrary.org/api/books?bibkeys=ISBN:${isbn}&jscmd=details&format=json`;
+
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            // Assuming the structure of the returned JSON and that the API returns data
+            const bookData = data[`ISBN:${isbn}`];
+            if (bookData) {
+              const title = bookData.details.title;
+              const authors = bookData.details.authors
+                ? bookData.details.authors
+                    .map((author) => author.name)
+                    .join(", ")
+                : "Unknown Author";
+              const thumbnailUrl = bookData.thumbnail_url;
+
+              // Setting the popup content
+              const popupDesc = document.getElementById("popupdesc");
+              const popupImg = document.getElementById("popupimg");
+
+              popupDesc.innerHTML = `<h3>${title}</h3><p>by ${authors}</p>`;
+              popupImg.style.backgroundImage = `url(${thumbnailUrl})`;
+              popupImg.style.width = "350px";
+              popupImg.style.height = "500px";
+              popupImg.style.backgroundSize = "cover";
+            } else {
+              // Handle case where no data is returned for the provided ISBN
+              console.log(bookData);
+              alert("No data found for the provided ISBN");
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching book data:", error);
+            alert("Failed to fetch book data");
+          });
+      }
+    </script>
+  </head>
+  <body>
+    {{header | safe}}
+    <div class="grid-container">
+      <div class="content">
+        <h2>Request Books</h2>
+        <form id="put_form" method="PUT">
+          <input
+            type="text"
+            name="isbn"
+            placeholder="Enter ISBN"
+            required
+            id="put_isbn"
+          />
+          <input
+            type="text"
+            name="prison_title"
+            placeholder="Enter Prison Name"
+            required
+          />
+          <button
+            type="button"
+            id="preview"
+            onclick="previewISBN(document.getElementById('put_isbn').value)"
+          >
+            Preview Book
+          </button>
+          <button type="button" onclick="put_request()">Submit Request</button>
+        </form>
+
+        <h2>Delete Request</h2>
+        <form id="del_form" method="DELETE">
+          <input type="text" name="id" placeholder="Enter ID" required />
+          <button onclick="delete_request()">Delete Request</button>
+          <br />
+        </form>
+        <br />
+        <h1>Book Donation Requests</h1>
+        {% if requests|length > 0 %}
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>ISBN</th>
+              <th>Prison</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for request in requests %}
+            <tr>
+              <td>{{request.id}}</td>
+              <td>{{request.isbn}}</td>
+              <td>{{request.prison_title}}</td>
+              <td>{{request.timestamp}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          {% else %}
+          <p>No books!</p>
+        </table>
+        {% endif %}
+        <script>
+          function put_request() {
+            const formData = new FormData(document.getElementById("put_form"));
+            fetch("/shelf", {
+              method: "PUT",
+              body: new URLSearchParams(formData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  console.log(response);
+                  alert("SUCCESS");
+                } else {
+                  throw new Error("FAILURE");
+                }
+              })
+              .catch((error) => {
+                alert(error.message);
+              });
+          }
+
+          function delete_request() {
+            const formData = new FormData(document.getElementById("del_form"));
+            fetch("/shelf", {
+              method: "DELETE",
+              body: new URLSearchParams(formData),
+            })
+              .then((response) => {
+                if (response.ok) {
+                  alert("SUCCESS");
+                } else {
+                  throw new Error("FAILURE");
+                }
+              })
+              .catch((error) => {
+                alert(error.message);
+              });
+          }
+        </script>
+      </div>
+      <div class="popup">
+        <div id="popupimg"></div>
+        <div id="popupdesc"></div>
+      </div>
+    </div>
+  </body>
+</html>
